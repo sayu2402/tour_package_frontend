@@ -7,7 +7,6 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import PackageList from './PackageList';
 
-
 const HomePage = () => {
   const [banners, setBanners] = useState([]);
 
@@ -18,8 +17,10 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>🏝️ Welcome to Tour Packages</h1>
+    <div className="p-6 md:p-10">
+      <h1 className="text-3xl md:text-4xl font-bold text-center mb-6">
+        🏝️ Welcome to Tour Packages
+      </h1>
 
       <Swiper
         modules={[Navigation, Pagination]}
@@ -28,36 +29,29 @@ const HomePage = () => {
         navigation
         pagination={{ clickable: true }}
         loop
-        style={{ marginBottom: '30px' }}
+        className="mb-10"
       >
-        {banners.map((banner) => {
-        //   console.log('Banner image:', banner.image);
-          return (
-            <SwiperSlide key={banner.id}>
+        {banners.map((banner) => (
+          <SwiperSlide key={banner.id}>
+            <div className="overflow-hidden rounded-lg shadow-lg">
               <img
                 src={banner.image}
                 alt={banner.title}
-                style={{
-                  width: '100%',
-                  height: '400px',
-                  objectFit: 'cover',
-                  borderRadius: '10px',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
-                }}
+                className="w-full h-[400px] object-cover"
               />
-              <h3 style={{ textAlign: 'center', marginTop: '10px' }}>{banner.title}</h3>
-            </SwiperSlide>
-          );
-        })}
+              <h3 className="text-center mt-2 text-xl font-semibold text-gray-800">
+              </h3>
+            </div>
+          </SwiperSlide>
+        ))}
       </Swiper>
 
-      <p style={{ marginTop: '30px' }}>
+      <p className="text-lg text-center text-gray-600 mb-6">
         Browse our amazing tour packages and plan your next adventure.
       </p>
       <PackageList />
     </div>
   );
 };
-
 
 export default HomePage;

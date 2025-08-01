@@ -12,20 +12,36 @@ const PackageList = () => {
   }, []);
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Available Tour Packages</h1>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+    <div className="p-6 md:p-10 bg-gray-50">
+      <h1 className="text-3xl font-bold mb-8 text-center text-blue-700">Available Tour Packages</h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {packages.map(pkg => (
-          <div key={pkg.id} style={{ border: '1px solid #ccc', padding: '10px', width: '300px' }}>
+          <div
+            key={pkg.id}
+            className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition p-4"
+          >
             <img
               src={pkg.photos[0] ? pkg.photos[0].image : ''}
               alt={pkg.title}
-              style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+              className="w-full h-48 object-cover rounded-md mb-4"
             />
-            <h3>{pkg.title}</h3>
-            <p>{pkg.description.substring(0, 100)}...</p>
-            <p><strong>Starting from ₹{pkg.schedules[0]?.amount || 'N/A'}</strong></p>
-            <Link to={`/packages/${pkg.id}`}>View Details</Link>
+
+            <h3 className="text-xl font-semibold text-gray-800">{pkg.title}</h3>
+            <p className="text-gray-600 mt-1 mb-2">
+              {pkg.description.length > 100 ? pkg.description.substring(0, 100) + '...' : pkg.description}
+            </p>
+
+            <p className="text-blue-600 font-bold mb-3">
+              Starting from ₹{pkg.schedules[0]?.amount || 'N/A'}
+            </p>
+
+            <Link
+              to={`/packages/${pkg.id}`}
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded transition"
+            >
+              View Details
+            </Link>
           </div>
         ))}
       </div>
