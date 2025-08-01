@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const EnquiryForm = ({ scheduleId = null }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -9,91 +11,102 @@ const EnquiryForm = ({ scheduleId = null }) => {
     message: '',
   });
 
-  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
-      await axios.post('http://localhost:8000/api/enquiries/', {
+      const payload = {
         ...formData,
-        schedule: scheduleId,
-      });
-      setSubmitted(true);
+        related_schedule: scheduleId || null,
+      };
+
+      await axios.post('http://localhost:8000/api/enquiry/', payload);
+      navigate('/thank-you');
     } catch (err) {
-      console.error('Enquiry submit error:', err);
+      console.error('Submission failed:', err.response?.data || err);
+      setError('Something went wrong. Please try again.');
     }
   };
 
-  if (submitted) {
-    return <p className="text-green-600 font-semibold">Thank you for your enquiry! We’ll contact you soon.</p>;
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-xl bg-white shadow-md rounded-lg p-6">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6 max-w-xl bg-white shadow-md rounded-lg p-6 border"
+    >
+      <h3 className="text-xl font-bold text-blue-800 mb-2">Send an Enquiry</h3>
+
+      {error && <p className="text-red-600">{error}</p>}
+
       <div>
-        <label className="block text-gray-700 font-medium mb-1" htmlFor="name">Name</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="name">Name</label>
         <input
-          type="text"
           name="name"
           id="name"
           value={formData.name}
           onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter your full name"
         />
       </div>
 
       <div>
-        <label className="block text-gray-700 font-medium mb-1" htmlFor="email">Email</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">Email</label>
         <input
           type="email"
           name="email"
           id="email"
           value={formData.email}
           onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="you@example.com"
         />
       </div>
 
       <div>
-        <label className="block text-gray-700 font-medium mb-1" htmlFor="phone">Phone</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="phone">Phone</label>
         <input
           type="text"
           name="phone"
           id="phone"
           value={formData.phone}
           onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter phone number"
         />
       </div>
 
       <div>
-        <label className="block text-gray-700 font-medium mb-1" htmlFor="message">Message</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="message">Message</label>
         <textarea
           name="message"
           id="message"
           rows="4"
           value={formData.message}
           onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Write your message..."
         ></textarea>
       </div>
 
-      <div>
-        <button
-          type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition"
-        >
-          Submit Enquiry
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition"
+      >
+        Submit Enquiry
+      </button>
     </form>
   );
 };
