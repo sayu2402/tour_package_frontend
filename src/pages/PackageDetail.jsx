@@ -14,59 +14,68 @@ const PackageDetail = () => {
       .catch(err => console.error('Error fetching package detail:', err));
   }, [id]);
 
-  if (!pkg) return <p>Loading...</p>;
+  if (!pkg) return <p className="text-center p-6">Loading...</p>;
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>{pkg.title}</h1>
+    <div className="p-6 md:p-10 max-w-6xl mx-auto">
+      <h1 className="text-3xl md:text-4xl font-bold text-blue-800 mb-6">{pkg.title}</h1>
 
-      {/* Image gallery for package photos */}
-      <div style={{ display: 'flex', overflowX: 'auto', gap: '10px', marginBottom: '20px' }}>
+      {/* Image gallery */}
+      <div className="flex overflow-x-auto gap-4 mb-6">
         {pkg.photos.map(photo => (
           <img
             key={photo.id}
             src={photo.image}
             alt="Package"
-            style={{ width: '300px', height: '200px', objectFit: 'cover', borderRadius: '5px' }}
+            className="w-[300px] h-[200px] object-cover rounded-lg shadow"
           />
         ))}
       </div>
 
-      <p><strong>From:</strong> {pkg.source_city} → {pkg.destination_city}</p>
-      <p>{pkg.description}</p>
+      <p className="text-lg text-gray-700 mb-2">
+        <strong className="text-gray-900">From:</strong> {pkg.source_city} → {pkg.destination_city}
+      </p>
+      <p className="text-gray-600 mb-6">{pkg.description}</p>
 
-      <h2>Schedules</h2>
+      <h2 className="text-2xl font-semibold text-blue-700 mb-4">Schedules</h2>
+
       {pkg.schedules.length > 0 ? (
-        <ul>
+        <ul className="space-y-6">
           {pkg.schedules.map(schedule => (
-            <li key={schedule.id} style={{ marginBottom: '20px' }}>
-              <p>
-                <strong>{schedule.title}</strong><br />
-                {schedule.from_date} to {schedule.to_date} – ₹{schedule.amount}
+            <li key={schedule.id} className="border p-4 rounded-md shadow-sm bg-white">
+              <p className="text-lg font-medium text-gray-800 mb-2">
+                {schedule.title}<br />
+                <span className="text-sm text-gray-600">
+                  {schedule.from_date} to {schedule.to_date} – ₹{schedule.amount}
+                </span>
               </p>
 
-              {/* Schedule photos */}
-              <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+              <div className="flex gap-3 mb-3">
                 {schedule.photos.map(photo => (
                   <img
                     key={photo.id}
                     src={photo.image}
                     alt="Schedule"
-                    style={{ width: '200px', height: '150px', objectFit: 'cover', borderRadius: '5px' }}
+                    className="w-[200px] h-[150px] object-cover rounded-md shadow"
                   />
                 ))}
               </div>
 
-              <button onClick={() => setSelectedSchedule(schedule.id)}>Enquire for this schedule</button>
+              <button
+                onClick={() => setSelectedSchedule(schedule.id)}
+                className="mt-2 inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded transition"
+              >
+                Enquire for this schedule
+              </button>
             </li>
           ))}
         </ul>
       ) : (
-        <p>No schedules available for this package.</p>
+        <p className="text-gray-500">No schedules available for this package.</p>
       )}
 
-      <hr />
-      <h2>Enquiry Form</h2>
+      <hr className="my-10" />
+      <h2 className="text-2xl font-semibold text-blue-700 mb-4">Enquiry Form</h2>
       <EnquiryForm scheduleId={selectedSchedule} />
     </div>
   );
