@@ -11,7 +11,7 @@ const TourPackageList = () => {
 
   const fetchPackages = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/packages/');
+      const res = await axios.get('http://localhost:8000/api/admin/tour-packages/');
       setPackages(res.data);
     } catch (err) {
       console.error('Error fetching tour packages:', err);
@@ -21,7 +21,7 @@ const TourPackageList = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this package?')) return;
     try {
-      await axios.delete(`http://localhost:8000/api/packages/${id}/`);
+      await axios.delete(`http://localhost:8000/api/admin/tour-packages/${id}/`);
       fetchPackages(); // Refresh list
     } catch (err) {
       console.error('Error deleting package:', err);
@@ -54,8 +54,12 @@ const TourPackageList = () => {
             {packages.map((pkg) => (
               <tr key={pkg.id} className="border-t">
                 <td className="px-4 py-2">{pkg.title}</td>
-                <td className="px-4 py-2">{pkg.source_city} ({pkg.source_country})</td>
-                <td className="px-4 py-2">{pkg.destination_city} ({pkg.destination_country})</td>
+                <td className="px-4 py-2">
+                  {pkg.source_city?.name} ({pkg.source_country?.name})
+                </td>
+                <td className="px-4 py-2">
+                  {pkg.destination_city?.name} ({pkg.destination_country?.name})
+                </td>
                 <td className="px-4 py-2 space-x-3">
                   <Link
                     to={`/admin/packages/edit/${pkg.id}`}

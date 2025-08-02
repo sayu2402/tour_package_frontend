@@ -14,27 +14,34 @@ import CityList from './admin/cities/CityList';
 import AddCity from './admin/cities/AddCity';
 import EditCity from './admin/cities/EditCity';
 import AllSchedules from './admin/schedule/AllSchedules';
-
+import CreateTourPackage from './admin/packages/CreateTourPackage';
+import EditTourPackage from './admin/packages/EditTourPackage';
+import TourPackageList from './admin/packages/TourPackageList';
 
 function App() {
   return (
     <Router>
-        <Navbar/>
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/list" element={<PackageList />} />
         <Route path="/packages/:id" element={<PackageDetail />} />
         <Route path="/thank-you" element={<ThankYou />} />
-        <Route path="/admin/*" element={<AdminLayout><div>Welcome Admin!</div></AdminLayout>} />
-        <Route path="/admin/countries" element={<CountryList />} />
-        <Route path="/admin/countries/add" element={<AddCountry />} />
-        <Route path="/admin/countries/edit/:id" element={<EditCountry />} />
-        <Route path="/admin/cities" element={<CityList />} />
-        <Route path="/admin/cities/add" element={<AddCity />} />
-        <Route path="/admin/cities/edit/:id" element={<EditCity />} />
-        <Route path="/admin/schedules" element={<AllSchedules />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<div>Welcome Admin!</div>} />
+          <Route path="countries" element={<CountryList />} />
+          <Route path="countries/add" element={<AddCountry />} />
+          <Route path="countries/edit/:id" element={<EditCountry />} />
+          <Route path="cities" element={<CityList />} />
+          <Route path="cities/add" element={<AddCity />} />
+          <Route path="cities/edit/:id" element={<EditCity />} />
+          <Route path="schedules" element={<AllSchedules />} />
+          <Route path="packages/create" element={<CreateTourPackage />} />
+          <Route path="packages/edit/:id" element={<EditTourPackage />} />
+          <Route path="packages/" element={<TourPackageList />} />
+        </Route>
       </Routes>
-      <Footer/>
+      <Footer />
     </Router>
   );
 }

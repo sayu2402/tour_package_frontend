@@ -25,8 +25,8 @@ const CreateTourPackage = () => {
 
   const fetchCountriesAndCities = async () => {
     try {
-      const countryRes = await axios.get('http://localhost:8000/api/countries/');
-      const cityRes = await axios.get('http://localhost:8000/api/cities/');
+      const countryRes = await axios.get('http://localhost:8000/api/admin/countries/');
+      const cityRes = await axios.get('http://localhost:8000/api/admin/cities/');
       setCountries(countryRes.data);
       setCities(cityRes.data);
     } catch (err) {
@@ -49,7 +49,7 @@ const CreateTourPackage = () => {
     e.preventDefault();
     try {
       // 1. Create tour package
-      const res = await axios.post('http://localhost:8000/api/packages/', formData);
+      const res = await axios.post('http://localhost:8000/api/admin/tour-packages/', formData);
       const packageId = res.data.id;
 
       // 2. Upload multiple photos
@@ -57,7 +57,7 @@ const CreateTourPackage = () => {
       for (let i = 0; i < photos.length; i++) {
         photoForm.append('image', photos[i]);
         photoForm.append('package', packageId);
-        await axios.post('http://localhost:8000/api/package-photos/', photoForm);
+        await axios.post('http://localhost:8000/api/admin/tour-photos/', photoForm);
         photoForm.delete('image');
         photoForm.delete('package');
       }
