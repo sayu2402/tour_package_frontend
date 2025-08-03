@@ -13,10 +13,14 @@ import EditCountry from './admin/countries/EditCountry';
 import CityList from './admin/cities/CityList';
 import AddCity from './admin/cities/AddCity';
 import EditCity from './admin/cities/EditCity';
-import AllSchedules from './admin/schedule/AllSchedules';
+import ScheduleList from './admin/schedule/ScheduleList';
 import CreateTourPackage from './admin/packages/CreateTourPackage';
 import EditTourPackage from './admin/packages/EditTourPackage';
 import TourPackageList from './admin/packages/TourPackageList';
+import AddSchedule from './admin/schedule/AddSchedule';
+import EditSchedule from './admin/schedule/EditSchedule';
+import BannerList from './admin/banner/BannerList';
+import AddBanner from './admin/banner/AddBanner';
 
 function App() {
   return (
@@ -35,10 +39,14 @@ function App() {
           <Route path="cities" element={<CityList />} />
           <Route path="cities/add" element={<AddCity />} />
           <Route path="cities/edit/:id" element={<EditCity />} />
-          <Route path="schedules" element={<AllSchedules />} />
+          <Route path="schedules" element={<ScheduleList />} />
           <Route path="packages/create" element={<CreateTourPackage />} />
           <Route path="packages/edit/:id" element={<EditTourPackage />} />
           <Route path="packages/" element={<TourPackageList />} />
+          <Route path="/admin/schedule/add" element={<AddSchedule />} />
+          <Route path="/admin/schedule/edit/:id" element={<EditSchedule />} />
+          <Route path="/admin/banners" element={<BannerList />} />
+          <Route path="/admin/banner/add" element={<AddBanner />} />
         </Route>
       </Routes>
       <Footer />
