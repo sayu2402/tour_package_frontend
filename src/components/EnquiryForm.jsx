@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const EnquiryForm = ({ scheduleId = null }) => {
+const EnquiryForm = ({ scheduleId }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
@@ -10,7 +10,7 @@ const EnquiryForm = ({ scheduleId = null }) => {
     phone: '',
     message: '',
   });
-
+  
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
@@ -26,8 +26,10 @@ const EnquiryForm = ({ scheduleId = null }) => {
     try {
       const payload = {
         ...formData,
-        related_schedule: scheduleId || null,
+        related_schedule: scheduleId ? Number(scheduleId) : null,
       };
+
+      console.log("Submitting payload:", payload);
 
       await axios.post('http://localhost:8000/api/enquiry/', payload);
       navigate('/thank-you');
@@ -38,16 +40,12 @@ const EnquiryForm = ({ scheduleId = null }) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-6 max-w-xl bg-white shadow-md rounded-lg p-6 border"
-    >
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-xl bg-white shadow-md rounded-lg p-6 border">
       <h3 className="text-xl font-bold text-blue-800 mb-2">Send an Enquiry</h3>
-
       {error && <p className="text-red-600">{error}</p>}
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="name">Name</label>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
         <input
           name="name"
           id="name"
@@ -60,7 +58,7 @@ const EnquiryForm = ({ scheduleId = null }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">Email</label>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
         <input
           type="email"
           name="email"
@@ -74,7 +72,7 @@ const EnquiryForm = ({ scheduleId = null }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="phone">Phone</label>
+        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
         <input
           type="text"
           name="phone"
@@ -88,7 +86,7 @@ const EnquiryForm = ({ scheduleId = null }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="message">Message</label>
+        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
         <textarea
           name="message"
           id="message"

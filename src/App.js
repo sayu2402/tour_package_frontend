@@ -21,6 +21,7 @@ import AddSchedule from './admin/schedule/AddSchedule';
 import EditSchedule from './admin/schedule/EditSchedule';
 import BannerList from './admin/banner/BannerList';
 import AddBanner from './admin/banner/AddBanner';
+import EnquiryList from './admin/enquiries/EnquiryList';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
           <Route path="/admin/schedule/edit/:id" element={<EditSchedule />} />
           <Route path="/admin/banners" element={<BannerList />} />
           <Route path="/admin/banner/add" element={<AddBanner />} />
+          <Route path="/admin/enquiries" element={<EnquiryList />} />
         </Route>
       </Routes>
       <Footer />

@@ -6,7 +6,7 @@ import EnquiryForm from '../components/EnquiryForm';
 const PackageDetail = () => {
   const { id } = useParams();
   const [pkg, setPkg] = useState(null);
-  const [selectedSchedule, setSelectedSchedule] = useState(null);
+  const [selectedScheduleId, setSelectedScheduleId] = useState(null);
 
   useEffect(() => {
     axios.get(`http://localhost:8000/api/packages/${id}/`)
@@ -20,7 +20,7 @@ const PackageDetail = () => {
     <div className="p-6 md:p-10 max-w-6xl mx-auto">
       <h1 className="text-3xl md:text-4xl font-bold text-blue-800 mb-6">{pkg.title}</h1>
 
-      {/* Image gallery */}
+      {/* Package Photos */}
       <div className="flex overflow-x-auto gap-4 mb-6">
         {pkg.photos.map(photo => (
           <img
@@ -33,12 +33,13 @@ const PackageDetail = () => {
       </div>
 
       <p className="text-lg text-gray-700 mb-2">
-        <strong className="text-gray-900">From:</strong> {pkg.source_city} → {pkg.destination_city}
+        <strong>From:</strong> {pkg.source_city} → {pkg.destination_city}
       </p>
+
       <p className="text-gray-600 mb-6">{pkg.description}</p>
 
+      {/* Schedules */}
       <h2 className="text-2xl font-semibold text-blue-700 mb-4">Schedules</h2>
-
       {pkg.schedules.length > 0 ? (
         <ul className="space-y-6">
           {pkg.schedules.map(schedule => (
@@ -50,6 +51,7 @@ const PackageDetail = () => {
                 </span>
               </p>
 
+              {/* Schedule Photos */}
               <div className="flex gap-3 mb-3">
                 {schedule.photos.map(photo => (
                   <img
@@ -62,7 +64,10 @@ const PackageDetail = () => {
               </div>
 
               <button
-                onClick={() => setSelectedSchedule(schedule.id)}
+                onClick={() => {
+                  console.log('Setting schedule ID:', schedule.id);
+                  setSelectedScheduleId(schedule.id);
+                }}
                 className="mt-2 inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded transition"
               >
                 Enquire for this schedule
@@ -71,12 +76,17 @@ const PackageDetail = () => {
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500">No schedules available for this package.</p>
+        <p className="text-gray-500">No schedules available.</p>
       )}
 
       <hr className="my-10" />
       <h2 className="text-2xl font-semibold text-blue-700 mb-4">Enquiry Form</h2>
-      <EnquiryForm scheduleId={selectedSchedule} />
+      {selectedScheduleId ? (
+        <p className="text-green-700 mb-4">Selected Schedule ID: {selectedScheduleId}</p>
+      ) : (
+        <p className="text-gray-500 mb-4">Please select a schedule to enquire.</p>
+      )}
+      <EnquiryForm scheduleId={selectedScheduleId} />
     </div>
   );
 };
