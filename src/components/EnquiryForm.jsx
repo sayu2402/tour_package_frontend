@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const EnquiryForm = ({ scheduleId }) => {
   const navigate = useNavigate();
@@ -10,11 +11,11 @@ const EnquiryForm = ({ scheduleId }) => {
     phone: '',
     message: '',
   });
-  
+
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
@@ -23,19 +24,29 @@ const EnquiryForm = ({ scheduleId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
+    if (!scheduleId) {
+      toast.error("Please select a schedule before submitting.");
+      return;
+    }
+
     try {
       const payload = {
         ...formData,
-        related_schedule: scheduleId ? Number(scheduleId) : null,
+        related_schedule: scheduleId,
       };
 
       console.log("Submitting payload:", payload);
 
       await axios.post('http://localhost:8000/api/enquiry/', payload);
-      navigate('/thank-you');
+
+      toast.success("Enquiry submitted successfully!");
+      setTimeout(() => navigate('/thank-you'), 2000); // Wait 2 seconds
+
     } catch (err) {
       console.error('Submission failed:', err.response?.data || err);
       setError('Something went wrong. Please try again.');
+      toast.error("Failed to submit enquiry.");
     }
   };
 

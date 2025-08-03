@@ -64,10 +64,7 @@ const PackageDetail = () => {
               </div>
 
               <button
-                onClick={() => {
-                  console.log('Setting schedule ID:', schedule.id);
-                  setSelectedScheduleId(schedule.id);
-                }}
+                onClick={() => setSelectedScheduleId(schedule.id)}
                 className="mt-2 inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded transition"
               >
                 Enquire for this schedule
@@ -79,14 +76,14 @@ const PackageDetail = () => {
         <p className="text-gray-500">No schedules available.</p>
       )}
 
-      <hr className="my-10" />
-      <h2 className="text-2xl font-semibold text-blue-700 mb-4">Enquiry Form</h2>
-      {selectedScheduleId ? (
-        <p className="text-green-700 mb-4">Selected Schedule ID: {selectedScheduleId}</p>
-      ) : (
-        <p className="text-gray-500 mb-4">Please select a schedule to enquire.</p>
+      {/* Show enquiry form ONLY if a schedule is selected */}
+      {selectedScheduleId && (
+        <>
+          <hr className="my-10" />
+          <h2 className="text-2xl font-semibold text-blue-700 mb-4">Enquiry Form</h2>
+          <EnquiryForm scheduleId={selectedScheduleId} />
+        </>
       )}
-      <EnquiryForm scheduleId={selectedScheduleId} />
     </div>
   );
 };

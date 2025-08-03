@@ -22,6 +22,9 @@ import EditSchedule from './admin/schedule/EditSchedule';
 import BannerList from './admin/banner/BannerList';
 import AddBanner from './admin/banner/AddBanner';
 import EnquiryList from './admin/enquiries/EnquiryList';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
   return (
@@ -52,6 +55,18 @@ function App() {
         </Route>
       </Routes>
       <Footer />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+
     </Router>
   );
 }
